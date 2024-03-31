@@ -1,0 +1,62 @@
+﻿@model List<Project_ASP_NET.Models.OrderDetailViewModel>
+
+@{
+    ViewData["Title"] = "Bestellingen";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Bestelling ID</th>
+                <th>Klant</th>
+                <th>Totale Prijs</th>
+                <th>Details Bestelling</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.OrderId</td>
+                    <td>@order.CustomerName</td>
+                    <td>@order.TotalPrice.ToString()</td>
+                    <td>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Product ID</th>
+                                    <th>Naam</th>
+                                    <th>Prijs Per Product</th>
+                                    <th>Hoeveelheid</th>
+                                    <th>Totale Prijs Per Product</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var product in order.OrderProducts)
+                                {
+                                    <tr>
+                                        <td>@product.Id</td>
+                                        <td>@product.Name</td>
+                                        <td>@product.Price.ToString()</td>
+                                        <td>@product.Quantity</td>
+                                        <td>@(product.Quantity * product.Price)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Er zijn geen bestellingen.</p>
+}
+
+

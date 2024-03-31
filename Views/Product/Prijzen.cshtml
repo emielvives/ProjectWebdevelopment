@@ -1,0 +1,42 @@
+﻿@model List<Project_ASP_NET.Models.ProductViewModel>
+
+@{
+    ViewData["Title"] = "Prijzen Aanpassen";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Model.Any())
+{
+    <form method="post" action="@Url.Action("UpdatePrices", "Product")">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Naam</th>
+                    <th>Prijs</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <td>@product.Id</td>
+                        <td>@product.Name</td>
+                        <td>
+                            <input type="text" name="productViewModels[@product.Id].Price" value="@product.Price.ToString("0.00")" />
+                            <input type="hidden" name="productViewModels[@product.Id].Id" value="@product.Id" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <button type="submit" class="btn btn-primary">Prijzen aanpassen</button>
+    </form>
+}
+else
+{
+    <p>Er zijn geen producten.</p>
+}
+

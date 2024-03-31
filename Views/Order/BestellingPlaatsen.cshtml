@@ -1,0 +1,34 @@
+﻿@using Project_ASP_NET.Areas.Identity.Data;
+@model List<OrderViewModel>
+
+<h1>Broodjes</h1>
+
+<form method="post" action="@Url.Action("PlaceOrder", "Order")">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Prijs</th>
+                <th>Hoeveelheid</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>@Model[i].Name</td>
+                    <td>@Model[i].Price</td>
+                    <td>
+                        <input type="number" name="orderViewModel[@i].Id" value="@Model[i].Id" hidden>
+                        <input type="number" name="orderViewModel[@i].Quantity" value="@Model[i].Quantity" min="0">
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button type="submit">Bestel</button>
+</form>
+
+
+
+

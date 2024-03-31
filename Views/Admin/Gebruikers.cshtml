@@ -1,0 +1,47 @@
+﻿@model List<UserViewModel>
+
+@{
+    ViewData["Title"] = "Gebruikers";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>E-mail</th>
+                <th>Roles</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Username</td>
+                    <td>
+                        @if (user.Roles == null || !user.Roles.Any())
+                        {
+                            <form method="post" action="@Url.Action("AssignUserRole", "Admin")">
+                                <input type="hidden" name="userId" value="@user.UserId" />
+                                <button type="submit" class="btn btn-primary">Assign User Role</button>
+                            </form>
+                        }
+                        else
+                        {
+                            foreach (var role in user.Roles)
+                            {
+                                <span>@role</span>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Er zijn geen gebruikers.</p>
+}

@@ -1,0 +1,29 @@
+﻿@model List<SummaryViewModel>
+@{
+	ViewData["Title"] = "Samenvatting";
+}
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product ID</th>
+            <th>Productnaam</th>
+            <th>Totale Bestelde Hoeveelheid</th>
+            <th>Totale Prijs</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ProductId</td>
+                <td>@item.ProductName</td>
+                <td>@item.TotalQuantityOrdered</td>
+                <td>@item.TotalPrice.ToString("F2")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p>Totale prijs voor alle producten: @ViewBag.TotalPriceForAllProducts.ToString("F2")</p>

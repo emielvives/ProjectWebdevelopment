@@ -1,0 +1,97 @@
+﻿@model List<Project_ASP_NET.Models.OrderDetailViewModel>
+
+@{
+    ViewData["Title"] = "Beheer Bestellingen";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Model.Any())
+{
+    <form method="post" action="@Url.Action("SaveChanges", "Order")">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Bestelling ID</th>
+                    <th>Klant</th>
+                    <th>Totale Prijs</th>
+                    <th>Details</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@order.OrderId</td>
+                        <td>@order.CustomerName</td>
+                        <td>@order.TotalPrice.ToString()</td>
+                        <td>
+                            <!-- Display order details for editing -->
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Product ID</th>
+                                        <th>Naam</th>
+                                        <th>Prijs Per Product</th>
+                                        <th>Hoeveelheid</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (var i = 0; i < order.OrderProducts.Count; i++)
+                                    {
+                                        var product = order.OrderProducts[i];
+                                        <tr>
+                                            <td>@product.Id</td>
+                                            <td>@product.Name</td>
+                                            <td>@product.Price.ToString()</td>
+                                            <td>
+                                                <!-- Input field for quantity -->
+                                                <input type="number" name="orderViewModels[@order.OrderId][@i].Quantity" value="@product.Quantity" />
+                                                <input type="hidden" name="orderViewModels[@order.OrderId][@i].Id" value="@product.Id" />
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                        <td>
+                            <!-- Button to save changes for this order -->
+                            <button type="submit" name="orderId" value="@order.OrderId" class="btn btn-primary">Aanpassingen Opslaan</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </form>
+
+    <form method="post" action="@Url.Action("RemoveSelected", "Order")">
+        <!-- Table to display order IDs with checkboxes for removal -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Bestelling ID</th>
+                    <th>Selecteer voor Verwijdering</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@order.OrderId</td>
+                        <td>
+                            <input type="checkbox" name="selectedOrders" value="@order.OrderId" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <!-- Button to remove selected orders -->
+        <button type="submit" class="btn btn-danger">Geselecteerde bestellingen verwijderen</button>
+    </form>
+}
+else
+{
+    <p>Er zijn geen bestellingen.</p>
+}
